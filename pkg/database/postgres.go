@@ -29,10 +29,10 @@ func getDbConnectionChain() string {
 }
 
 func Connection() {
-	ConnectionChain := getDbConnectionChain()
+	connectionChain := getDbConnectionChain()
 	//log.Println(ConnectionChain)
 	var err error
-	DB, err = gorm.Open(postgres.Open(ConnectionChain), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open(connectionChain), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	} else {
