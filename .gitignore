@@ -2,8 +2,13 @@
 node_modules/
 dist/
 
-#Env file
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
 
+#Env file
 *.env
 
 # Compiled Java class files
@@ -20,7 +25,6 @@ dist/
 
 # Maven
 target/
-dist/
 
 # JetBrains IDE
 .idea/
@@ -36,7 +40,6 @@ Thumbs.db
 
 # Applications
 *.app
-*.exe
 *.war
 
 # Large media files
