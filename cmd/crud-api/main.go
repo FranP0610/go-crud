@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/FranP0610/go-crud/pkg/database"
 	"github.com/FranP0610/go-crud/pkg/domain"
-	"github.com/FranP0610/go-crud/pkg/routes"
+	myhttp "github.com/FranP0610/go-crud/pkg/http"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"log"
@@ -28,7 +28,11 @@ func main() {
 
 	// Defining the router using Gorilla/MUX and Http mod
 	r := mux.NewRouter()
-	r.HandleFunc("/", routes.HomeHandler)
+	r.HandleFunc("/", myhttp.HomeHandler)
+	r.HandleFunc("/artists", myhttp.GetArtistsHandler).Methods("GET")
+	r.HandleFunc("/artist", myhttp.GetArtistHandler).Methods("GET")
+	r.HandleFunc("/artists", myhttp.PostArtistHandler).Methods("POST")
+	r.HandleFunc("/artists", myhttp.DeleteArtistHandler).Methods("DELETE")
 	http.ListenAndServe(":8080", r)
 
 }
