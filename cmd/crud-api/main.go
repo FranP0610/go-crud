@@ -28,6 +28,7 @@ func main() {
 	r := mux.NewRouter()
 	// Health check of the service
 	r.HandleFunc("/health_check/", myhttp.HealthCheckHandler)
+
 	// Artist routes
 	r.HandleFunc("/artist", myhttp.GetArtistsHandler).Methods("GET")
 	r.HandleFunc("/artist/{id}", myhttp.GetOneArtistHandler).Methods("GET")
@@ -38,5 +39,11 @@ func main() {
 	r.HandleFunc("/album/{id}", myhttp.GetOneAlbum).Methods("GET")
 	r.HandleFunc("/album", myhttp.CreateAlbum).Methods("POST")
 	r.HandleFunc("/album/{id}", myhttp.DeleteAlbum).Methods("DELETE")
+	// Tracks routes
+	r.HandleFunc("/tracks", myhttp.GetTracksHandler).Methods("GET")
+	r.HandleFunc("/track/{id}", myhttp.GetOneTrackHandler).Methods("GET")
+	r.HandleFunc("/track", myhttp.CreateTrackHandler).Methods("POST")
+	r.HandleFunc("/track/{id}", myhttp.DeleteTrackHandler).Methods("DELETE")
 	http.ListenAndServe(":8080", r)
+
 }

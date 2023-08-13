@@ -23,6 +23,7 @@ func GetOneAlbum(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Album not found"))
 		return
 	}
+	database.DB.Model(&album).Association("Tracks").Find(&album.Tracks)
 	json.NewEncoder(w).Encode(&album)
 }
 
@@ -36,9 +37,7 @@ func CreateAlbum(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(err.Error()))
 		return
 	}
-
 	json.NewEncoder(w).Encode(&album)
-
 }
 
 func DeleteAlbum(w http.ResponseWriter, r *http.Request) {
@@ -51,5 +50,5 @@ func DeleteAlbum(w http.ResponseWriter, r *http.Request) {
 		return // end the request
 	}
 	database.DB.Unscoped().Delete(&album, params["id"])
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusNoContent)
 }

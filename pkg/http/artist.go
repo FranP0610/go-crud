@@ -27,6 +27,7 @@ func GetOneArtistHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Artist not found"))
 		return // end the request
 	}
+	database.DB.Model(&artist).Association("Albums").Find(&artist.Albums)
 	json.NewEncoder(w).Encode(&artist)
 }
 
@@ -57,6 +58,5 @@ func DeleteArtistHandler(w http.ResponseWriter, r *http.Request) {
 		return // end the request
 	}
 	database.DB.Unscoped().Delete(&artist)
-	w.WriteHeader(http.StatusOK)
-
+	w.WriteHeader(http.StatusNoContent)
 }
