@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/FranP0610/go-crud/pkg/database"
 	"github.com/FranP0610/go-crud/pkg/domain"
-	"github.com/FranP0610/go-crud/pkg/routes"
+	myhttp "github.com/FranP0610/go-crud/pkg/http"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"log"
@@ -20,15 +20,30 @@ func init() {
 func main() {
 	// Initialize DB connection
 	database.Connection()
-
 	// Begin migrations of the 3 databases
 	database.DB.AutoMigrate(&domain.Track{})
 	database.DB.AutoMigrate(domain.Album{})
 	database.DB.AutoMigrate(&domain.Artist{})
-
 	// Defining the router using Gorilla/MUX and Http mod
 	r := mux.NewRouter()
-	r.HandleFunc("/", routes.HomeHandler)
+	// Health check of the service
+	r.HandleFunc("/health_check/", myhttp.HealthCheckHandler)
+
+	// Artist routes
+	r.HandleFunc("/artist", myhttp.GetArtistsHandler).Methods("GET")
+	r.HandleFunc("/artist/{id}", myhttp.GetOneArtistHandler).Methods("GET")
+	r.HandleFunc("/artist", myhttp.PostArtistHandler).Methods("POST")
+	r.HandleFunc("/artist/{id}", myhttp.DeleteArtistHandler).Methods("DELETE")
+	// Albums routes
+	r.HandleFunc("/albums", myhttp.GetAlbums).Methods("GET")
+	r.HandleFunc("/album/{id}", myhttp.GetOneAlbum).Methods("GET")
+	r.HandleFunc("/album", myhttp.CreateAlbum).Methods("POST")
+	r.HandleFunc("/album/{id}", myhttp.DeleteAlbum).Methods("DELETE")
+	// Tracks routes
+	r.HandleFunc("/tracks", myhttp.GetTracksHandler).Methods("GET")
+	r.HandleFunc("/track/{id}", myhttp.GetOneTrackHandler).Methods("GET")
+	r.HandleFunc("/track", myhttp.CreateTrackHandler).Methods("POST")
+	r.HandleFunc("/track/{id}", myhttp.DeleteTrackHandler).Methods("DELETE")
 	http.ListenAndServe(":8080", r)
 
 }
