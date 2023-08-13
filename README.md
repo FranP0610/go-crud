@@ -5,12 +5,13 @@
 ## Description
 
 This is a simple project written in Go to build a CRUD app with a postgres database.
+The aim of the app is to create, delete and get info about artists or music bands. 
 
-[//]: # (<div style="text-align: center;">)
+<div style="text-align: center;">
 
-[//]: # (<img src="images/image-v1.png" alt="DevOps Architecture Diagram" width="600px">)
+<img src="images/database.jpeg" alt="DevOps Architecture Diagram" width="600px">
 
-[//]: # (</div>)
+</div>
 
 ## Getting Started
 
