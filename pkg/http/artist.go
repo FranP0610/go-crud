@@ -4,15 +4,30 @@ import (
 	"encoding/json"
 	"github.com/FranP0610/go-crud/pkg/database"
 	"github.com/FranP0610/go-crud/pkg/domain"
+	"github.com/gorilla/mux"
 	"net/http"
 )
 
 func GetArtistsHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("get all artists"))
+	//w.Write([]byte("get all artists"))
+	var artist []domain.Artist
+	database.DB.Find(&artist)
+	json.NewEncoder(w).Encode(&artist)
+
 }
 
-func GetArtistHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Get just one artist"))
+func GetOneArtistHandler(w http.ResponseWriter, r *http.Request) {
+	//w.Write([]byte("Get just one artist"))
+	var artist domain.Artist
+	params := mux.Vars(r)
+	database.DB.First(&artist, params["id"])
+	//json.NewEncoder(w).Encode(params)
+	if artist.ID == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("Artist not found"))
+		return // end the request
+	}
+	json.NewEncoder(w).Encode(&artist)
 }
 
 func PostArtistHandler(w http.ResponseWriter, r *http.Request) {
@@ -32,5 +47,15 @@ func PostArtistHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteArtistHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Delete artist"))
+	params := mux.Vars(r)
+	var artist domain.Artist
+	database.DB.First(&artist, params["id"])
+	if artist.ID == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("Artist not found"))
+		return // end the request
+	}
+	database.DB.Unscoped().Delete(&artist)
+	w.WriteHeader(http.StatusOK)
+
 }

@@ -24,14 +24,13 @@ func main() {
 	database.DB.AutoMigrate(&domain.Track{})
 	database.DB.AutoMigrate(domain.Album{})
 	database.DB.AutoMigrate(&domain.Artist{})
-
 	// Defining the router using Gorilla/MUX and Http mod
 	r := mux.NewRouter()
 	r.HandleFunc("/", myhttp.HomeHandler)
-	r.HandleFunc("/artists", myhttp.GetArtistsHandler).Methods("GET")
-	r.HandleFunc("/artist", myhttp.GetArtistHandler).Methods("GET")
-	r.HandleFunc("/artists", myhttp.PostArtistHandler).Methods("POST")
-	r.HandleFunc("/artists", myhttp.DeleteArtistHandler).Methods("DELETE")
+	r.HandleFunc("/artist", myhttp.GetArtistsHandler).Methods("GET")
+	r.HandleFunc("/artist/{id}", myhttp.GetOneArtistHandler).Methods("GET")
+	r.HandleFunc("/artist", myhttp.PostArtistHandler).Methods("POST")
+	r.HandleFunc("/artist/{id}", myhttp.DeleteArtistHandler).Methods("DELETE")
 	http.ListenAndServe(":8080", r)
 
 }
