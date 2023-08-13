@@ -20,7 +20,6 @@ func init() {
 func main() {
 	// Initialize DB connection
 	database.Connection()
-
 	// Begin migrations of the 3 databases
 	database.DB.AutoMigrate(&domain.Track{})
 	database.DB.AutoMigrate(domain.Album{})
